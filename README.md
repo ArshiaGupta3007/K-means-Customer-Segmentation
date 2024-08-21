@@ -13,7 +13,7 @@ This project is a web application that uses KMeans clustering to predict custome
 ## Technology Stack
 
 - **Backend**: Flask (Python)
-- **Frontend**: HTML, CSS, JavaScript
-- **Machine Learning**: KMeans clustering from Scikit-learn
-- **Data Handling**: Pandas, NumPy
+- **Frontend**: HTML, CSS
+- **Machine Learning**: KMeans clustering using Scikit-learn
+- **Data Handling**: Pandas, NumPy, Matplotlib
 <img width="487" alt="image" src="https://github.com/user-attachments/assets/e3f55928-ec7a-4c17-ac90-47419fa5d12f">
