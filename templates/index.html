@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Clustering</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Clustering Prediction</h1>
+        <form id="clusteringForm">
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+            <div class="form-group">
+                <label for="avg_spend">Average Spend:</label>
+                <input type="number" step="0.01" id="avg_spend" name="avg_spend" required>
+            </div>
+            <div class="form-group">
+                <label for="visit_per_week">Visits per Week:</label>
+                <input type="number" step="0.01" id="visit_per_week" name="visit_per_week" required>
+            </div>
+            <div class="form-group">
+                <label for="promotion_interest">Promotion Interest (1-10):</label>
+                <input type="number" id="promotion_interest" name="promotion_interest" min="1" max="10" required>
+            </div>
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="result" class="result" style="display: none;">
+            <h2>Cluster Prediction</h2>
+            <p id="clusterName"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('clusteringForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                age: formData.get('age'),
+                avg_spend: formData.get('avg_spend'),
+                visit_per_week: formData.get('visit_per_week'),
+                promotion_interest: formData.get('promotion_interest')
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                document.getElementById('clusterName').textContent = `The new customer is assigned to the ${result.cluster} cluster.`;
+                document.getElementById('result').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('clusterName').textContent = 'Error predicting cluster';
+                document.getElementById('result').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
+
